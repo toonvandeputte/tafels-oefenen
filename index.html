@@ -1,5 +1,6 @@
+
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,50 +15,148 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="starter-template.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
   </head>
+
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">Tafels oefenen</h3>
+              <ul class="nav masthead-nav">
+                <li class="active"><a href="#"><span class="glyphicon glyphicon-random"></span></a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">6</a></li>
+                <li><a href="#">7</a></li>
+                <li><a href="#">8</a></li>
+                <li><a href="#">9</a></li>
+                <li><a href="#">10</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <!-- #loading -->
+            <div id="loading">
+              <p>Bezig met laden...</p>
+            </div>
+            <!-- /#loading -->
+            <!-- #intro -->
+            <div id="intro"><p class="lead">Hoi! Tafels oefenen is niet altijd zo leuk, maar je leert er wel snel mee rekenen. Daarom krijg je na elke vijf juiste oplossingen hier een grappig filmpje te zien. Je kiest zelf welke tafels je wil oefenen, bovenaan de pagina. Opgelet! Telkens je daar een nieuwe tafel kiest, begint de teller weer van voren.</p>
+            <button type="button" class="btn btn-lg btn-primary" id="startbtn">Start!</button>
+            </div>
+            <!-- /#intro -->
+            <!-- # excercise -->
+            <div id="excercise"><h1 class="cover-heading"><span id="firstpart"></span> x <span id="secondpart"></span></h1>
+            <table class="table table-bordered" id="honderdveld">
+              <tr>
+                <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td>
+              </tr>  
+              <tr>
+                <td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td>
+              </tr>
+              <tr>
+                <td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
+              </tr>
+              <tr>
+                <td>31</td><td>32</td><td>33</td><td>34</td><td>35</td><td>36</td><td>37</td><td>38</td><td>39</td><td>40</td>
+              </tr>
+              <tr>
+                <td>41</td><td>42</td><td>43</td><td>44</td><td>45</td><td>46</td><td>47</td><td>48</td><td>49</td><td>50</td>
+              </tr>
+              <tr>
+                <td>51</td><td>52</td><td>53</td><td>54</td><td>55</td><td>56</td><td>57</td><td>58</td><td>59</td><td>60</td>
+              </tr>  
+              <tr>
+                <td>61</td><td>62</td><td>63</td><td>64</td><td>65</td><td>66</td><td>67</td><td>68</td><td>69</td><td>70</td>
+              </tr>
+              <tr>
+                <td>71</td><td>72</td><td>73</td><td>74</td><td>75</td><td>76</td><td>77</td><td>78</td><td>79</td><td>80</td>
+              </tr>
+              <tr>
+                <td>81</td><td>82</td><td>83</td><td>84</td><td>85</td><td>86</td><td>87</td><td>88</td><td>89</td><td>90</td>
+              </tr>
+              <tr>
+                <td>91</td><td>92</td><td>93</td><td>94</td><td>95</td><td>96</td><td>97</td><td>98</td><td>99</td><td>100</td>
+              </tr>
+            </table>
+            <button type="button" class="btn btn-lg btn-primary" id="nextbtn">Volgende</button>
+          </div>
+          <!-- /#excercise -->
+          </div>
+
+          <div class="mastfoot">
+            <div class="inner">
+              <div class="progress">
+                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                  <span class="sr-only">40% Complete (success)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+
       </div>
+
     </div>
-
-    <div class="container">
-
-      <div class="starter-template">
-        <h1>Bootstrap starter template</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
-      </div>
-
-    </div><!-- /.container -->
-
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>    
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+        $("#loading").hide();
+        $("#intro").show();
+        var multitables = [2,3,4,5,6,7,8,9,10];
+        var multipliers = [1,2,3,4,5,6,7,8,9,10];
+        var excounter = 0;
+        function goTables(limit) {
+            if (multitables.indexOf(limit) > -1) {
+              var mytables = [limit];
+            } else {
+              var mytables = multitables;
+            }
+            var questions = new Array();
+            //var qcounter = 0;
+            for(var i = 0, len = mytables.length; i< len; i++) {
+              var firstpart = mytables[i];
+              for(var j = 0, jlen = multipliers.length; j< jlen; j++) {
+                var secondpart = multipliers[j];
+                var solution = firstpart*secondpart;
+                questions.push([
+                  {key: 'firstpart', val: firstpart},
+                  {key: 'secondpart', val: secondpart},
+                  {key: 'solution', val: solution}
+                ]);
+              }
+            }           
+            console.table(questions);
+
+        }
+        $("#startbtn").click(function(){
+          $("#intro").hide();
+          $("#excercise").show();
+          goTables();
+        });
+    });
+    </script>
   </body>
 </html>
