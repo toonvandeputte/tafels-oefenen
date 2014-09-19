@@ -62,37 +62,10 @@
             </div>
             <!-- /#intro -->
             <!-- # excercise -->
-            <div id="excercise"><h1 class="cover-heading"><span id="firstpart"></span> x <span id="secondpart"></span></h1>
+            <div id="excercise"><h1 class="cover-heading"><span id="firstpart"></span> x <span id="secondpart"></span> <span id="feedback"></span></h1>
             <table class="table table-bordered" id="honderdveld">
               <tr>
-                <td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td>
-              </tr>  
-              <tr>
-                <td>11</td><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td>
-              </tr>
-              <tr>
-                <td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td>
-              </tr>
-              <tr>
-                <td>31</td><td>32</td><td>33</td><td>34</td><td>35</td><td>36</td><td>37</td><td>38</td><td>39</td><td>40</td>
-              </tr>
-              <tr>
-                <td>41</td><td>42</td><td>43</td><td>44</td><td>45</td><td>46</td><td>47</td><td>48</td><td>49</td><td>50</td>
-              </tr>
-              <tr>
-                <td>51</td><td>52</td><td>53</td><td>54</td><td>55</td><td>56</td><td>57</td><td>58</td><td>59</td><td>60</td>
-              </tr>  
-              <tr>
-                <td>61</td><td>62</td><td>63</td><td>64</td><td>65</td><td>66</td><td>67</td><td>68</td><td>69</td><td>70</td>
-              </tr>
-              <tr>
-                <td>71</td><td>72</td><td>73</td><td>74</td><td>75</td><td>76</td><td>77</td><td>78</td><td>79</td><td>80</td>
-              </tr>
-              <tr>
-                <td>81</td><td>82</td><td>83</td><td>84</td><td>85</td><td>86</td><td>87</td><td>88</td><td>89</td><td>90</td>
-              </tr>
-              <tr>
-                <td>91</td><td>92</td><td>93</td><td>94</td><td>95</td><td>96</td><td>97</td><td>98</td><td>99</td><td>100</td>
+                <td>Bezig met laden...</td>
               </tr>
             </table>
             <button type="button" class="btn btn-lg btn-primary" id="nextbtn">Volgende</button>
@@ -103,8 +76,8 @@
           <div class="mastfoot">
             <div class="inner">
               <div class="progress">
-                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                  <span class="sr-only">40% Complete (success)</span>
+                <div class="progress-bar progress-bar-success" role="progressbar" style="width: 20%">
+                  <span class="sr-only">Countdown timer</span>
                 </div>
               </div>
             </div>
@@ -125,36 +98,95 @@
     $( document ).ready(function() {
         $("#loading").hide();
         $("#intro").show();
+        // begin initial data
         var multitables = [2,3,4,5,6,7,8,9,10];
         var multipliers = [1,2,3,4,5,6,7,8,9,10];
         var excounter = 0;
+        // end initial data
+        function drawField() {
+          var fieldhtml ="";
+          for(var row = 0, rlen = 10; row< rlen; row++) {
+            fieldhtml+="<tr>";
+            for(var cell = 1, clen = 10; cell<= clen; cell++) {
+              var cellval=(row*10)+cell;
+              fieldhtml+="<td class='clickcell' id='cell"+cellval+"'><a class='celllink' data-value='"+cellval+"' href='?firstpart="+window.qtoshow[0].firstpart+"&secondpart="+window.qtoshow[0].secondpart+"&answer="+cellval+"'>"+cellval+"</a></td>";
+            }  
+            fieldhtml+="</tr>";
+          }  
+          $("#honderdveld").html(fieldhtml);
+          $(".celllink").click(function(event){
+            event.preventDefault();
+            $(".celllink").removeClass("hilite");
+            $(this).addClass("hilite");
+            var answerclicked = parseInt($(this).attr("data-value"));
+            checkAnswer(answerclicked);
+            //console.log($(this).attr("data-value"));
+          });
+          //console.log(fieldhtml);
+        }
         function goTables(limit) {
             if (multitables.indexOf(limit) > -1) {
               var mytables = [limit];
             } else {
               var mytables = multitables;
             }
-            var questions = new Array();
+            window.questions = [];
             //var qcounter = 0;
             for(var i = 0, len = mytables.length; i< len; i++) {
               var firstpart = mytables[i];
               for(var j = 0, jlen = multipliers.length; j< jlen; j++) {
                 var secondpart = multipliers[j];
                 var solution = firstpart*secondpart;
-                questions.push([
-                  {key: 'firstpart', val: firstpart},
-                  {key: 'secondpart', val: secondpart},
-                  {key: 'solution', val: solution}
-                ]);
+                var thisquestion = Object.create(null);
+                thisquestion.firstpart = firstpart;
+                thisquestion.secondpart = secondpart;
+                thisquestion.solution = solution;
+                window.questions.push(thisquestion);
               }
             }           
-            console.table(questions);
+            console.table(window.questions);
+            getQuestion();
+        }
+        function getQuestion(q) {
+          if (q===undefined || q < 0) {           
+            if (window.questions.length===1) {
+              q=0;
+            } else {
+              q=Math.floor(Math.random()*(window.questions.length));
+            }
+          }
+          //console.log("get question: "+q);
+          window.qtoshow = window.questions.splice(q, 1);
+          //console.log(qtoshow[0]);
+          //console.log(qtoshow[0].firstpart);
+          $("#firstpart").html(window.qtoshow[0].firstpart);
+          $("#secondpart").html(window.qtoshow[0].secondpart);
+          $("#feedback").html("<span class='glyphicon glyphicon-question-sign'></span>");
+          drawField();
+          $('#nextbtn').prop('disabled', true);
+          //console.table(qtoshow);
 
         }
+        function checkAnswer(answer){
+          //console.log(answer+" / "+window.qtoshow[0].solution);
+          if (answer===window.qtoshow[0].solution) {
+            $("#feedback").html("<span class='glyphicon glyphicon-ok-circle'></span>");
+            $('#nextbtn').prop('disabled', false);
+          } else {
+            $("#feedback").html("<span class='glyphicon glyphicon-remove-circle'></span>");  
+            $('#nextbtn').prop('disabled', true);          
+          }
+        }
+        //initial button activate
         $("#startbtn").click(function(){
           $("#intro").hide();
           $("#excercise").show();
           goTables();
+        });
+        // next button action
+        $('#nextbtn').click(function(){
+          getQuestion();
+          console.log(window.questions.length);
         });
     });
     </script>

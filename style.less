@@ -27,6 +27,18 @@ a:hover {
   color: #fff;
 }
 
+a.celllink {
+    color:black;
+    display:block;
+    padding:8px;
+    &.hilite {
+      background-color: lighten(@color-cover,20%);
+    }
+    &:focus,&:hover {
+      background-color: white;
+      text-decoration: none;
+    }
+}
 /* Custom default button */
 .btn-default,
 .btn-default:hover,
@@ -37,6 +49,30 @@ a:hover {
   border: 1px solid #fff;
 }
 
+/*
+* Honderdveld
+*/
+
+.table > tbody > tr > td.clickcell {
+  padding:0;
+}
+
+/*
+* Opgave
+*/
+
+#feedback {
+  font-size: 0.8em;
+  .glyphicon-question-sign {
+    color:darken(@color-cover,30%);
+  }
+  .glyphicon-remove-circle {
+    color:darken(red,10%);
+  }
+  .glyphicon-ok-circle {
+    color:darken(green,10%);
+  }
+}
 
 /*
  * Base structure

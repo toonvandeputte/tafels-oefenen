@@ -19,6 +19,19 @@ a:focus,
 a:hover {
   color: #fff;
 }
+a.celllink {
+  color: black;
+  display: block;
+  padding: 8px;
+}
+a.celllink.hilite {
+  background-color: #f4f4bc;
+}
+a.celllink:focus,
+a.celllink:hover {
+  background-color: white;
+  text-decoration: none;
+}
 /* Custom default button */
 .btn-default,
 .btn-default:hover,
@@ -28,6 +41,27 @@ a:hover {
   /* Prevent inheritence from `body` */
   background-color: #fff;
   border: 1px solid #fff;
+}
+/*
+* Honderdveld
+*/
+.table > tbody > tr > td.clickcell {
+  padding: 0;
+}
+/*
+* Opgave
+*/
+#feedback {
+  font-size: 0.8em;
+}
+#feedback .glyphicon-question-sign {
+  color: #989819;
+}
+#feedback .glyphicon-remove-circle {
+  color: #cc0000;
+}
+#feedback .glyphicon-ok-circle {
+  color: #004d00;
 }
 /*
  * Base structure
