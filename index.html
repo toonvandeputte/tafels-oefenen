@@ -58,14 +58,19 @@
             <!-- /#loading -->
             <!-- #intro -->
             <div id="intro"><p class="lead">Hoi! Tafels oefenen is niet altijd zo leuk, maar je leert er wel snel mee rekenen. Daarom krijg je na elke vijf juiste oplossingen hier een grappig filmpje te zien. Je kiest zelf welke tafels je wil oefenen, bovenaan de pagina. Opgelet! Telkens je daar een nieuwe tafel kiest, begint de teller weer van voren.</p>
-            <button type="button" class="btn btn-lg btn-primary" id="startbtn">Start!</button>
+            <button type="button" class="btn btn-lg btn-primary startbtn" >Start!</button>
             </div>
             <!-- /#intro -->
-            <!-- #intro -->
-            <div id="outro"><p class="lead">Joechei! 't Is gedaan!</p>
-            <button type="button" class="btn btn-lg btn-primary" id="endbtn">Opnieuw!</button>
+            <!-- #success -->
+            <div id="outro-success"><p class="lead">Joechei! 't Is gedaan!</p>
+            <button type="button" class="btn btn-lg btn-primary startbtn" >Opnieuw!</button>
             </div>
-            <!-- /#intro -->
+            <!-- /#success -->
+            <!-- #fail -->
+            <div id="outro-fail"><p class="lead">Oeps, dat duurde iets te lang!</p>
+            <button type="button" class="btn btn-lg btn-primary startbtn" >Opnieuw!</button>
+            </div>
+            <!-- /#fail -->
             <!-- # excercise -->
             <div id="excercise"><h1 class="cover-heading"><span id="firstpart"></span> x <span id="secondpart"></span> <span id="feedback"></span></h1>
             <table class="table table-bordered" id="honderdveld">
@@ -118,8 +123,8 @@
         // end initial data
         // begin mode selector
         for (m=1,mlen=10; m<=mlen;m++) {
-          $(".masthead-nav li.mode-"+m+" a").data( "mode", m );
-          $(".masthead-nav li.mode-"+m+" a").click(function(){
+          $("li.mode-"+m+" a").data( "mode", m );
+          $("li.mode-"+m+" a").click(function(){
             $(".masthead-nav li").removeClass("active");
             $(this).parent().addClass("active"); 
             tablemode = $(this).data("mode");
@@ -129,11 +134,13 @@
         }
         // end mode selector
         function startRun(tablemode) {   
+          clearInterval(window.countdowninterval);
           excounter = 0;
           timetocount = 0;
           //console.log("tablemode: "+tablemode);       
           $("#intro").hide(); 
-          $("#outro").hide();
+          $("#outro-fail").hide();
+          $("#outro-success").hide();
           $("#excercise").show();
           goTables(tablemode);
         }
@@ -184,6 +191,7 @@
             $("#totalex").html(window.questions.length);
             timetocount=window.questions.length*timeperq;
             timeleft = timetocount;
+            updateBar();
             window.countdowninterval = setInterval(trackTime,1000);
             getQuestion();
         }
@@ -195,6 +203,10 @@
         function updateBar() {
             if (timeleft<0) {
                 timeleft=0;
+                if (window.questions.length>0) {
+                  $("#excercise").hide();
+                  $("#outro-fail").show();
+                }
             }
             relval=(timeleft/timetocount)*100;
             console.log(relval);
@@ -203,8 +215,7 @@
         function getQuestion(q) {
           if (window.questions.length===0) {
             $("#excercise").hide();
-            $("#outro").show();
-            clearInterval(countdowninterval);
+            $("#outro-success").show();
           } else {            
             excounter++;
             $("#currentex").html(excounter);
@@ -231,22 +242,19 @@
         function checkAnswer(answer){
           //console.log(answer+" / "+window.qtoshow[0].solution);
           if (answer===window.qtoshow[0].solution) {
-            timeleft+=bonus;
-            updateBar();
+            //timeleft+=bonus;
+            //updateBar();
             $("#feedback").html("<span class='glyphicon glyphicon-ok-circle'></span>");
             $('#nextbtn').prop('disabled', false);
           } else {
-            timeleft-=penalty;
-            updateBar();
+            //timeleft-=penalty;
+            //updateBar();
             $("#feedback").html("<span class='glyphicon glyphicon-remove-circle'></span>");  
             $('#nextbtn').prop('disabled', true);          
           }
         }
         //initial button activate
-        $("#startbtn").click(function(){
-          startRun(tablemode);
-        });
-        $("#endbtn").click(function(){
+        $(".startbtn").click(function(){
           startRun(tablemode);
         });
         // next button action
