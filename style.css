@@ -7,7 +7,9 @@
 #intro,
 #excercise,
 #outro-fail,
-#outro-success {
+#outro-success,
+#intermission,
+#progress {
   display: none;
 }
 /*

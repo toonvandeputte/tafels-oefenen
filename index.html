@@ -71,6 +71,14 @@
             <button type="button" class="btn btn-lg btn-primary startbtn" >Opnieuw!</button>
             </div>
             <!-- /#fail -->
+            <!-- #gif -->
+            <div id="intermission">
+              <div id="gifholder">
+                <img class="funnygif" src="funnygifs/cat1.gif" height="50%">
+              </div>
+              <button type="button" class="btn btn-lg btn-primary contbtn" >Verder</button>
+            </div>
+            <!-- /#gif -->
             <!-- # excercise -->
             <div id="excercise"><h1 class="cover-heading"><span id="firstpart"></span> x <span id="secondpart"></span> <span id="feedback"></span></h1>
             <table class="table table-bordered" id="honderdveld">
@@ -83,7 +91,7 @@
           <!-- /#excercise -->
           </div>
 
-          <div class="mastfoot">
+          <div class="mastfoot" id="progress">
 
             <div class="inner">
               <p><span id="currentex">1</span> van <span id="totalex">10</span></p>
@@ -117,9 +125,22 @@
         var tablemode =1;
         var timetocount = 0;
         var timeleft = 0
-        var timeperq = 3;
+        var timeperq = 4;
         var penalty = 2;
         var bonus = 1;
+        var funnygifs = new Array(
+          "cat1.gif",
+          "cat2.gif",
+          "cat3.gif",
+          "cat4.gif",
+          "cat5.gif",
+          "cat6.gif",
+          "cat7.gif",
+          "cat8.gif",
+          "minions1.gif",
+          "minions2.gif",
+          "robot1.gif"
+        );
         // end initial data
         // begin mode selector
         for (m=1,mlen=10; m<=mlen;m++) {
@@ -139,9 +160,11 @@
           timetocount = 0;
           //console.log("tablemode: "+tablemode);       
           $("#intro").hide(); 
+          $("#intermission").hide();
           $("#outro-fail").hide();
           $("#outro-success").hide();
           $("#excercise").show();
+          $("#progress").show();
           goTables(tablemode);
         }
         function drawField() {
@@ -175,6 +198,7 @@
               //console.log("all tables");
             }
             window.questions = [];
+            window.clonedgifs = funnygifs.slice(0);
             //var qcounter = 0;
             for(var i = 0, len = mytables.length; i< len; i++) {
               var firstpart = mytables[i];
@@ -195,10 +219,16 @@
             window.countdowninterval = setInterval(trackTime,1000);
             getQuestion();
         }
+        function continueRun() {          
+            $("#intermission").hide();
+            $("#excercise").show();
+            $("#progress").show();
+            window.countdowninterval = setInterval(trackTime,1000);            
+        }
         function trackTime() {
               timeleft--
               updateBar();
-              console.log("timeleft: "+timeleft);
+              console.log("timeleft: "+timeleft+" / "+window.countdowninterval);
         }
         function updateBar() {
             if (timeleft<0) {
@@ -212,11 +242,37 @@
             console.log(relval);
             $("#countdownbar").css("width",relval+"%");
         }
+        function showIntermission(){                  
+              clearInterval(window.countdowninterval);
+              if (window.clonedgifs.length===0) {
+                window.clonedgifs = funnygifs.slice(0);
+              } 
+              fg=Math.floor(Math.random()*(window.clonedgifs.length));
+              window.currentgif = window.clonedgifs.splice(fg, 1);
+              $("#progress").hide();
+              $("#excercise").hide();
+              $("#intermission").show();
+              $("#gifholder").html('<img class="funnygif" src="funnygifs/'+window.currentgif+'" width="80%">');
+              console.table(window.currentgif);
+              if (window.questions.length===0) {
+                $(".contbtn").click(function(){
+                   $("#excercise").hide();
+                   $("#outro-success").show();
+                });
+              } else {
+                $(".contbtn").click(function(){
+                   continueRun();
+                });
+              }
+        }
         function getQuestion(q) {
           if (window.questions.length===0) {
             $("#excercise").hide();
             $("#outro-success").show();
-          } else {            
+          } else {      
+            if (excounter%5===0&&excounter>4) {          
+              showIntermission();
+            }      
             excounter++;
             $("#currentex").html(excounter);
             console.log("excounter: "+excounter);
@@ -256,6 +312,9 @@
         //initial button activate
         $(".startbtn").click(function(){
           startRun(tablemode);
+        });
+        $(".contbtn").click(function(){
+          continueRun();
         });
         // next button action
         $('#nextbtn').click(function(){
