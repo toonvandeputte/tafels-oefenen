@@ -225,7 +225,15 @@
             fieldhtml+="<tr>";
             for(var cell = 1, clen = 10; cell<= clen; cell++) {
               var cellval=(row*10)+cell;
-              fieldhtml+="<td class='clickcell' id='cell"+cellval+"'><a class='celllink' data-value='"+cellval+"' href='?firstpart="+window.qtoshow[0].firstpart+"&secondpart="+window.qtoshow[0].secondpart+"&answer="+cellval+"'>"+cellval+"</a></td>";
+              var before="";
+              var after="";
+              var specialclass="";
+              if (cellval%5===0) {
+                var before="<strong>";
+                var after="</strong>";
+                var specialclass="hilite";
+              }
+              fieldhtml+="<td class='clickcell "+specialclass+"' id='cell"+cellval+"'>"+before+"<a class='celllink' data-value='"+cellval+"' href='?firstpart="+window.qtoshow[0].firstpart+"&secondpart="+window.qtoshow[0].secondpart+"&answer="+cellval+"'>"+cellval+"</a>"+after+"</td>";
             }  
             fieldhtml+="</tr>";
           }  

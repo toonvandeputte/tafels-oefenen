@@ -3,6 +3,7 @@
 */
 
 @color-cover:rgb(230,230,100);
+@color-hilite:rgb(100,0,0);
 
 /*
 * Offsets
@@ -27,7 +28,8 @@ a:hover {
 a.celllink {
     color:black;
     display:block;
-    padding:8px;
+    padding:4px;
+    font-size: 16px;
     &.hilite {
       background-color: lighten(@color-cover,20%);
     }
@@ -51,7 +53,16 @@ a.celllink {
 */
 
 .table > tbody > tr > td.clickcell {
+  &.hilite {
+    background-color: darken(@color-cover,5%);
+  }
   padding:0;
+  strong {
+    font-weight: normal;
+    a {
+      color:@color-hilite;
+    }
+  }
 }
 
 /*
