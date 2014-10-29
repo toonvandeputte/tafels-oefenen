@@ -166,14 +166,14 @@
           $("li.mode-"+m+" a").data( "mode", m );
           $("#intro .btn-tafel"+m).data( "mode", m );     
           //console.log("mode set: "+$("#intro .btn-tafel"+m).data( "mode"));    
-          $("li.mode-"+m+" a").clickOrTouch(function(){
+          $("li.mode-"+m+" a").bind('touchstart',function(){
             $(".masthead-nav li").removeClass("active");
             $(this).parent().addClass("active"); 
             tablemode = $(this).data("mode");
             startRun($(this).data("mode"));
             //console.log($(this).data("mode"));
           });
-          $("#intro .btn-tafel"+m).clickOrTouch(function(){
+          $("#intro .btn-tafel"+m).bind('touchstart',function(){
             //console.log("mode: "+$(this).data("mode"));
             $(".masthead-nav li").removeClass("active");
             $("li.mode-"+$(this).data("mode")).addClass("active"); 
@@ -207,7 +207,7 @@
             fieldhtml+="</tr>";
           }  
           $("#honderdveld").html(fieldhtml);
-          $(".celllink").clickOrTouch(function(event){
+          $(".celllink").bind('touchstart',function(event){
             event.preventDefault();
             $(".celllink").removeClass("hilite");
             $(this).addClass("hilite");
@@ -289,14 +289,14 @@
               $("#gifholder").html('<img class="funnygif" src="funnygifs/'+window.currentgif+'" width="80%">');
               console.table(window.currentgif);
               if (window.questions.length===0) {
-                $(".contbtn").clickOrTouch(function(){
+                $(".contbtn").bind('touchstart',function(){
                   window.clearInterval(countdowninterval);
                   console.log("interval "+countdowninterval+" should be cleared");
                    $("#excercise").hide();
                    $("#outro-success").show();
                 });
               } else {
-                $(".contbtn").clickOrTouch(function(){
+                $(".contbtn").bind('touchstart',function(){
                    continueRun();
                 });
               }
@@ -349,14 +349,14 @@
           }
         }
         //initial button activate
-        $(".startbtn").clickOrTouch(function(){
+        $(".startbtn").bind('touchstart',function(){
           startRun(tablemode);
         });
-        $(".contbtn").clickOrTouch(function(){
+        $(".contbtn").bind('touchstart',function(){
           continueRun();
         });
         // next button action
-        $('#nextbtn').clickOrTouch(function(){
+        $('#nextbtn').bind('touchstart',function(){
           getQuestion();
           console.log(window.questions.length);
         });
