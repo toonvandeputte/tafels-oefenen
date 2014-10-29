@@ -243,19 +243,31 @@
         function goTables(limit) {
             if (multitables.indexOf(limit) > -1) {
               var mytables = [limit];
-              //console.log("not all tables");
-              //console.table(mytables);
+              window.questions = [];
+              for(var i = 0, len = mytables.length; i< len; i++) {
+                var secondpart = mytables[i];
+                for(var j = 0, jlen = multipliers.length; j< jlen; j++) {
+                  var firstpart = multipliers[j];
+                  var solution = firstpart*secondpart;
+                  var thisquestion = Object.create(null);
+                  thisquestion.firstpart = firstpart;
+                  thisquestion.secondpart = secondpart;
+                  thisquestion.solution = solution;
+                  window.questions.push(thisquestion);
+                }
+              }     
             } else {
-              var mytables = multitables;
-              //console.log("all tables");
-            }
-            window.questions = [];
-            window.clonedgifs = funnygifs.slice(0);
-            //var qcounter = 0;
-            for(var i = 0, len = mytables.length; i< len; i++) {
-              var secondpart = mytables[i];
-              for(var j = 0, jlen = multipliers.length; j< jlen; j++) {
-                var firstpart = multipliers[j];
+              var mytables = multitables.slice(0);
+              var mymultis = multipliers.slice(0);
+              window.questions = [];
+              for (var i=0;i<10;i++) {
+                a=Math.floor(Math.random()*(mytables.length));
+                b=Math.floor(Math.random()*(mymultis.length));
+                var firstpart = mytables[a];
+                var secondpart = mymultis.splice(b, 1)[0];
+                console.log("--- "+i+" ---");
+                console.log("firstpart: "+firstpart+"(el "+a+") "+mytables.length);
+                console.log("secondpart: "+secondpart+"(el "+b+") "+mymultis.length);
                 var solution = firstpart*secondpart;
                 var thisquestion = Object.create(null);
                 thisquestion.firstpart = firstpart;
@@ -263,7 +275,11 @@
                 thisquestion.solution = solution;
                 window.questions.push(thisquestion);
               }
-            }           
+              //var mytables = multitables;
+              //console.log("all tables");
+              console.table(window.questions);
+            }
+            window.clonedgifs = funnygifs.slice(0);
             $("#totalex").html(window.questions.length);
             timetocount=window.questions.length*timeperq;
             timeleft = timetocount;
@@ -331,7 +347,7 @@
             window.clearInterval(countdowninterval);
             console.log("interval "+countdowninterval+" should be cleared");
           } else {      
-            if (excounter%5===0&&excounter>4) {          
+            if (excounter%3===0&&excounter>0) {          
               showIntermission();
             }      
             excounter++;
