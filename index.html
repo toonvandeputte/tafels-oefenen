@@ -126,6 +126,15 @@
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script>
     $( document ).ready(function() {
+        $(document).bind("mobileinit", function() {
+          //Set your global init settings here
+                //This is the setting you are looking for!     
+                $.mobile.defaultPageTransition = 'none';
+          
+          //I personally use some other settings, such as:
+          $.mobile.page.prototype.options.addBackBtn = true;
+          $.mobile.useFastClick  = false;
+        });
         $("#loading").hide();
         $("#intro").show();
         // begin initial data
