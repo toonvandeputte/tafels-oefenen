@@ -126,6 +126,7 @@
     <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
     <script>
     $( document ).ready(function() {
+
         $(document).bind("mobileinit", function() {
           //Set your global init settings here
                 //This is the setting you are looking for!     
@@ -134,6 +135,15 @@
           //I personally use some other settings, such as:
           $.mobile.page.prototype.options.addBackBtn = true;
           $.mobile.useFastClick  = false;
+        });
+
+        jQuery.fn.extend({
+            clickOrTouch: function(handler) {
+                return this.each(function() {
+                    var event = ('ontouchstart' in document) ? 'touchstart' : 'click';
+                    $(this).on(event, handler);
+                });
+            }
         });
         $("#loading").hide();
         $("#intro").show();
@@ -167,14 +177,14 @@
           $("li.mode-"+m+" a").data( "mode", m );
           $("#intro .btn-tafel"+m).data( "mode", m );     
           //console.log("mode set: "+$("#intro .btn-tafel"+m).data( "mode"));    
-          $("li.mode-"+m+" a").click(function(){
+          $("li.mode-"+m+" a").bind('click',function(){
             $(".masthead-nav li").removeClass("active");
             $(this).parent().addClass("active"); 
             tablemode = $(this).data("mode");
             startRun($(this).data("mode"));
             //console.log($(this).data("mode"));
           });
-          $("#intro .btn-tafel"+m).click(function(){
+          $("#intro .btn-tafel"+m).bind('click',function(){
             //console.log("mode: "+$(this).data("mode"));
             $(".masthead-nav li").removeClass("active");
             $("li.mode-"+$(this).data("mode")).addClass("active"); 
@@ -208,7 +218,7 @@
             fieldhtml+="</tr>";
           }  
           $("#honderdveld").html(fieldhtml);
-          $(".celllink").click(function(event){
+          $(".celllink").bind('click',function(event){
             event.preventDefault();
             $(".celllink").removeClass("hilite");
             $(this).addClass("hilite");
@@ -290,14 +300,14 @@
               $("#gifholder").html('<img class="funnygif" src="funnygifs/'+window.currentgif+'" width="80%">');
               console.table(window.currentgif);
               if (window.questions.length===0) {
-                $(".contbtn").click(function(){
+                $(".contbtn").bind('click',function(){
                   window.clearInterval(countdowninterval);
                   console.log("interval "+countdowninterval+" should be cleared");
                    $("#excercise").hide();
                    $("#outro-success").show();
                 });
               } else {
-                $(".contbtn").click(function(){
+                $(".contbtn").bind('click',function(){
                    continueRun();
                 });
               }
@@ -350,14 +360,14 @@
           }
         }
         //initial button activate
-        $(".startbtn").click(function(){
+        $(".startbtn").bind('click',function(){
           startRun(tablemode);
         });
-        $(".contbtn").click(function(){
+        $(".contbtn").bind('click',function(){
           continueRun();
         });
         // next button action
-        $('#nextbtn').click(function(){
+        $('#nextbtn').bind('click',function(){
           getQuestion();
           console.log(window.questions.length);
         });
