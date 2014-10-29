@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -58,7 +57,18 @@
             <!-- /#loading -->
             <!-- #intro -->
             <div id="intro"><p class="lead">Hoi! Tafels oefenen is niet altijd zo leuk, maar je leert er wel snel mee rekenen. Daarom krijg je na elke vijf juiste oplossingen hier een grappig filmpje te zien. Je kiest zelf welke tafels je wil oefenen, bovenaan de pagina. Opgelet! Telkens je daar een nieuwe tafel kiest, begint de teller weer van voren.</p>
-            <button type="button" class="btn btn-lg btn-primary startbtn" >Start!</button>
+              <div class="buttons">
+                <button type="button" class="btn btn-lg btn-primary btn-tafel1" ><span class="glyphicon glyphicon-random"></span></button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel2" >2</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel3" >3</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel4" >4</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel5" >5</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel6" >6</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel7" >7</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel8" >8</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel9" >9</button>
+                <button type="button" class="btn btn-lg btn-primary btn-tafel10" >10</button>
+              </div>
             </div>
             <!-- /#intro -->
             <!-- #success -->
@@ -86,7 +96,7 @@
                 <td>Bezig met laden...</td>
               </tr>
             </table>
-            <button type="button" class="btn btn-lg btn-primary" id="nextbtn">Volgende</button>
+            <!-- <button type="button" class="btn btn-lg btn-primary" id="nextbtn">Volgende</button> -->
           </div>
           <!-- /#excercise -->
           </div>
@@ -119,6 +129,7 @@
         $("#loading").hide();
         $("#intro").show();
         // begin initial data
+        var countdowninterval = null;
         var multitables = [2,3,4,5,6,7,8,9,10];
         var multipliers = [1,2,3,4,5,6,7,8,9,10];
         var excounter = 0;
@@ -145,6 +156,8 @@
         // begin mode selector
         for (m=1,mlen=10; m<=mlen;m++) {
           $("li.mode-"+m+" a").data( "mode", m );
+          $("#intro .btn-tafel"+m).data( "mode", m );     
+          //console.log("mode set: "+$("#intro .btn-tafel"+m).data( "mode"));    
           $("li.mode-"+m+" a").click(function(){
             $(".masthead-nav li").removeClass("active");
             $(this).parent().addClass("active"); 
@@ -152,10 +165,18 @@
             startRun($(this).data("mode"));
             //console.log($(this).data("mode"));
           });
+          $("#intro .btn-tafel"+m).click(function(){
+            //console.log("mode: "+$(this).data("mode"));
+            $(".masthead-nav li").removeClass("active");
+            $("li.mode-"+$(this).data("mode")).addClass("active"); 
+            tablemode = $(this).data("mode");
+            startRun($(this).data("mode"));
+            //console.log($(this).data("mode"));
+          });
         }
         // end mode selector
         function startRun(tablemode) {   
-          clearInterval(window.countdowninterval);
+          window.clearInterval(countdowninterval);
           excounter = 0;
           timetocount = 0;
           //console.log("tablemode: "+tablemode);       
@@ -216,19 +237,23 @@
             timetocount=window.questions.length*timeperq;
             timeleft = timetocount;
             updateBar();
-            window.countdowninterval = setInterval(trackTime,1000);
+            window.paused=false;
+            countdowninterval = window.setInterval(trackTime,1000);
             getQuestion();
         }
         function continueRun() {          
             $("#intermission").hide();
             $("#excercise").show();
             $("#progress").show();
-            window.countdowninterval = setInterval(trackTime,1000);            
+            //countdowninterval = window.setInterval(trackTime,1000);     
+            window.paused=false;       
         }
         function trackTime() {
-              timeleft--
+              if (window.paused===false){
+                timeleft--;
+              }
               updateBar();
-              console.log("timeleft: "+timeleft+" / "+window.countdowninterval);
+              console.log("timeleft: "+timeleft+" / countdowninterval:"+countdowninterval+" / timetocount: "+timetocount+" / relval: "+relval);
         }
         function updateBar() {
             if (timeleft<0) {
@@ -239,11 +264,12 @@
                 }
             }
             relval=(timeleft/timetocount)*100;
-            console.log(relval);
+            //console.log(relval);
             $("#countdownbar").css("width",relval+"%");
         }
         function showIntermission(){                  
-              clearInterval(window.countdowninterval);
+              //window.clearInterval(countdowninterval);
+              window.paused=true;
               if (window.clonedgifs.length===0) {
                 window.clonedgifs = funnygifs.slice(0);
               } 
@@ -256,6 +282,8 @@
               console.table(window.currentgif);
               if (window.questions.length===0) {
                 $(".contbtn").click(function(){
+                  window.clearInterval(countdowninterval);
+                  console.log("interval "+countdowninterval+" should be cleared");
                    $("#excercise").hide();
                    $("#outro-success").show();
                 });
@@ -269,6 +297,8 @@
           if (window.questions.length===0) {
             $("#excercise").hide();
             $("#outro-success").show();
+            window.clearInterval(countdowninterval);
+            console.log("interval "+countdowninterval+" should be cleared");
           } else {      
             if (excounter%5===0&&excounter>4) {          
               showIntermission();
@@ -298,10 +328,11 @@
         function checkAnswer(answer){
           //console.log(answer+" / "+window.qtoshow[0].solution);
           if (answer===window.qtoshow[0].solution) {
-            //timeleft+=bonus;
+            timeleft+=bonus;
             //updateBar();
             $("#feedback").html("<span class='glyphicon glyphicon-ok-circle'></span>");
-            $('#nextbtn').prop('disabled', false);
+            //$('#nextbtn').prop('disabled', false);
+            window.timeOutID=window.setTimeout(getQuestion,(bonus*1000));
           } else {
             //timeleft-=penalty;
             //updateBar();
