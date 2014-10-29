@@ -7,7 +7,9 @@
 #intro,
 #excercise,
 #outro-fail,
-#outro-success {
+#outro-success,
+#intermission,
+#progress {
   display: none;
 }
 /*
@@ -62,6 +64,9 @@ a.celllink:hover {
 }
 #feedback .glyphicon-ok-circle {
   color: #004d00;
+}
+#gifholder {
+  margin-bottom: 10px;
 }
 /*
  * Base structure
