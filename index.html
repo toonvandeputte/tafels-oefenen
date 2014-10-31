@@ -102,12 +102,10 @@
           </div>
 
           <div class="mastfoot" id="progress">
-
             <div class="inner">
-              <p><span id="currentex">1</span> van <span id="totalex">10</span></p>
+              <div id="orientation"><span id="currentex">1</span> van <span id="totalex">10</span></div>
               <div class="progress">
                 <div id="countdownbar" class="progress-bar progress-bar-success" role="progressbar" style="width: 100%">
-                  <span class="sr-only">Countdown timer</span>
                 </div>
               </div>
             </div>
@@ -135,15 +133,6 @@
           //I personally use some other settings, such as:
           $.mobile.page.prototype.options.addBackBtn = true;
           $.mobile.useFastClick  = false;
-        });
-
-        jQuery.fn.extend({
-            clickOrTouch: function(handler) {
-                return this.each(function() {
-                    var event = ('ontouchstart' in document) ? 'touchstart' : 'click';
-                    $(this).on(event, handler);
-                });
-            }
         });
         $("#loading").hide();
         $("#intro").show();

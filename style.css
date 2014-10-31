@@ -154,6 +154,10 @@ body {
   color: #fff;
   border-bottom-color: #fff;
 }
+.masthead .inner {
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
 @media (min-width: 768px) {
   .masthead-brand {
     float: left;
@@ -185,6 +189,19 @@ body {
   color: #999;
   /* IE8 proofing */
   color: rgba(255, 255, 255, 0.5);
+}
+.mastfoot .inner {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.mastfoot .inner .progress {
+  margin-bottom: 0;
+}
+.mastfoot #orientation {
+  position: relative;
+  top: 2rem;
+  color: black;
+  text-shadow: none;
 }
 /*
  * Affix and center
