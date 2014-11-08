@@ -349,6 +349,9 @@
             $("#excercise").hide();
             $("#outro-success").show();
             window.clearInterval(countdowninterval);
+            doBuzz();
+            /*doBuzz();
+            console.log("buzzin");*/
             console.log("interval "+countdowninterval+" should be cleared");
           } else {      
             if (excounter%3===0&&excounter>0) {          
@@ -390,6 +393,32 @@
             $("#feedback").html("<span class='glyphicon glyphicon-remove-circle'></span>");  
             $('#nextbtn').prop('disabled', true);          
           }
+        }
+        // spark Core functions
+        // on success
+        function onMethodSuccess() {
+          console.log("there is a buzz!");
+        }
+        //on fail
+        function onMethodFailure(data) {
+          console.log("there was a fail: "+data);         
+        }
+        function doBuzz() {
+          var url = "https://api.spark.io/v1/devices/53ff73066667574813382167/buzz";
+          $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+              access_token: "bd67b685a32527b861041b3cf29eb92e95d27dc9",
+              args: null
+            },
+            dataType: "json"
+          }).success(function(obj) {
+            console.log(obj);
+            (obj.return_value && obj.return_value == 200) ? onMethodSuccess() : onMethodFailure((obj.error)?obj.error:"");
+          }).fail(function(obj) {
+            onMethodFailure();
+          });
         }
         //initial button activate
         $(".startbtn").bind('click',function(){
