@@ -158,8 +158,8 @@
           "AAv2vgz.gif",
           "CzIwHNo.gif",
           "EAyb5zF.gif",
-          "IBp4Idx.gif",
-          "UltimateOblongGrub.gif",
+          "IBp4Idx.gif"
+          /*"UltimateOblongGrub.gif",
           "XBSRXNL.gif",
           "anigif_enhanced-14915-1395921184-3.gif",
           "cat1.gif",
@@ -182,15 +182,19 @@
           "fail6.gif",
           "h1uaGwR.gif",
           "lego1.gif",
-          "list.txt",
           "minions1.gif",
           "minions2.gif",
           "robot1.gif",
           "slapstick1.gif",
           "tumblr_mgahzpccz91riz8uqo1_500.gif",
           "tumblr_nf0mpiaRCG1s2yegdo1_400.gif",
-          "xWLywyx.gif" 
+          "xWLywyx.gif" */
         );
+        var playcounts = new Array();
+        funnygifs.forEach(function(entry){
+          playcounts[entry]=0;
+        }); 
+        console.table(playcounts);
         // end initial data
         // begin mode selector
         for (m=1,mlen=10; m<=mlen;m++) {
@@ -281,9 +285,9 @@
                 b=Math.floor(Math.random()*(mymultis.length));
                 var firstpart = mytables[a];
                 var secondpart = mymultis.splice(b, 1)[0];
-                console.log("--- "+i+" ---");
+                /*console.log("--- "+i+" ---");
                 console.log("firstpart: "+firstpart+"(el "+a+") "+mytables.length);
-                console.log("secondpart: "+secondpart+"(el "+b+") "+mymultis.length);
+                console.log("secondpart: "+secondpart+"(el "+b+") "+mymultis.length);*/
                 var solution = firstpart*secondpart;
                 var thisquestion = Object.create(null);
                 thisquestion.firstpart = firstpart;
@@ -293,9 +297,8 @@
               }
               //var mytables = multitables;
               //console.log("all tables");
-              console.table(window.questions);
+              //console.table(window.questions);
             }
-            window.clonedgifs = funnygifs.slice(0);
             $("#totalex").html(window.questions.length);
             timetocount=window.questions.length*timeperq;
             timeleft = timetocount;
@@ -316,7 +319,7 @@
                 timeleft--;
               }
               updateBar();
-              console.log("timeleft: "+timeleft+" / countdowninterval:"+countdowninterval+" / timetocount: "+timetocount+" / relval: "+relval);
+              //console.log("timeleft: "+timeleft+" / countdowninterval:"+countdowninterval+" / timetocount: "+timetocount+" / relval: "+relval);
         }
         function updateBar() {
             if (timeleft<0) {
@@ -330,23 +333,42 @@
             //console.log(relval);
             $("#countdownbar").css("width",relval+"%");
         }
+        function findagif(playcount) {
+          if (playcount==undefined) {
+            playcount=0;
+          }
+          mygif = funnygifs[Math.floor(Math.random()*funnygifs.length)];
+          console.log("mygif: "+mygif);
+          loopcounter=0;
+          while (playcounts[mygif]!=playcount) {
+            mygif = funnygifs[Math.floor(Math.random()*funnygifs.length)];
+            loopcounter++;
+            if (loopcounter>=funnygifs.length) {
+              playcount++;
+              loopcounter=0;
+            }
+          }
+          //console.log("starting recursive function");
+          /*findagif(playcount);*/
+          return mygif;
+        }
         function showIntermission(){                  
               //window.clearInterval(countdowninterval);
               window.paused=true;
-              if (window.clonedgifs.length===0) {
-                window.clonedgifs = funnygifs.slice(0);
-              } 
-              fg=Math.floor(Math.random()*(window.clonedgifs.length));
-              window.currentgif = window.clonedgifs.splice(fg, 1);
+              valtocheck=undefined;
+              window.currentgif=findagif();
+              console.log(window.currentgif);              
+              playcounts[mygif]+=1;
+              console.table(playcounts);              
               $("#progress").hide();
               $("#excercise").hide();
               $("#intermission").show();
               $("#gifholder").html('<img class="funnygif" src="funnygifs/'+window.currentgif+'" width="80%">');
-              console.table(window.currentgif);
+              
               if (window.questions.length===0) {
                 $(".contbtn").bind('click',function(){
                   window.clearInterval(countdowninterval);
-                  console.log("interval "+countdowninterval+" should be cleared");
+                  //console.log("interval "+countdowninterval+" should be cleared");
                    $("#excercise").hide();
                    $("#outro-success").show();
                 });
@@ -364,14 +386,14 @@
             doBuzz();
             /*doBuzz();
             console.log("buzzin");*/
-            console.log("interval "+countdowninterval+" should be cleared");
+            //console.log("interval "+countdowninterval+" should be cleared");
           } else {      
             if (excounter%3===0&&excounter>0) {          
               showIntermission();
             }      
             excounter++;
             $("#currentex").html(excounter);
-            console.log("excounter: "+excounter);
+            //console.log("excounter: "+excounter);
             if (q===undefined || q < 0) {           
               if (window.questions.length===1) {
                 q=0;
@@ -406,32 +428,6 @@
             $('#nextbtn').prop('disabled', true);          
           }
         }
-        // spark Core functions
-        // on success
-        function onMethodSuccess() {
-          console.log("there is a buzz!");
-        }
-        //on fail
-        function onMethodFailure(data) {
-          console.log("there was a fail: "+data);         
-        }
-        function doBuzz() {
-          var url = "https://api.spark.io/v1/devices/53ff73066667574813382167/buzz";
-          $.ajax({
-            type: "POST",
-            url: url,
-            data: {
-              access_token: "bd67b685a32527b861041b3cf29eb92e95d27dc9",
-              args: null
-            },
-            dataType: "json"
-          }).success(function(obj) {
-            console.log(obj);
-            (obj.return_value && obj.return_value == 200) ? onMethodSuccess() : onMethodFailure((obj.error)?obj.error:"");
-          }).fail(function(obj) {
-            onMethodFailure();
-          });
-        }
         //initial button activate
         $(".startbtn").bind('click',function(){
           startRun(tablemode);
@@ -442,7 +438,7 @@
         // next button action
         $('#nextbtn').bind('click',function(){
           getQuestion();
-          console.log(window.questions.length);
+          //console.log(window.questions.length);
         });
     });
     </script>
